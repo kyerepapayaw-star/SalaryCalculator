@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ghana Individual Income Tax Return Form</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1 class="title">Ghana Tax / PAYE Form</h1>
+
+    <form>
+      <div class="form-group">
+        <label for="gross-salary">Basic Monthly Salary (GHS)</label>
+        <input type="text" id="gross-salary" name="gross_salary" step="" placeholder="" required>
+      </div>
+
+      <div class="form-group">
+        <label for="tier1">SSNIT Contribution </label>
+        <input type="text" id="tier1" name="tier1"  placeholder="" readonly>
+
+      <div class="form-group">
+        <label for="PAYE"> Income tax</label>
+        <input type="text" id="allowances" name="allowances" placeholder="">
+      </div>
+
+    <div class="form-group">
+        <label for="Net Salary">Net Salary</label>
+        <input type="text" id= "NetSalary" name="NetSalary"  placeholder="">
+    </div>
+
+
+   <div class="btn-container">
+        <button type="button" class="btn-calculate" onclick="SalaryCalculator()" >Calculate Tax</button>
+      </div>      
+
+      
+     
+      
+    </form>
+     </div>
+     <script>
+        function SalaryCalculator(){
+        // Get Salary From User
+        let salary=parseFloat(document.getElementById("gross-salary").value);
+
+        // SSNIT Calculation
+        let ssnit = salary*(5.5/100)
+        document.getElementById("tier1").value=ssnit
+
+        // money left after ssnit
+        let income = salary - ssnit;
+
+       // define tax variable and assign the value 0 to it
+       let tax = 0
+
+       // remove tax free ammount first
+       let taxableincome = income - 490
+       if (taxableincome < 0){
+        taxableincome = 0;
+       
+
+        // next 110 is 5%
+        if (taxableincome > 0){
+          let part  = Math.min (taxableincome,110)
+          tax = tax + (part*(5/100))
+          taxableincome = taxableincome - part;
+        }
+       }
+         // next 130 is 10%
+        if (taxableincome >0){
+        let part = Math.min ( taxableincome,130);
+        tax = tax + (part*(10/100));
+        taxableincome = taxableincome - part ;
+                 }
+
+        // next 3166.67 is 17.5%
+        if (taxableincome >0){
+        let part = Math.min ( taxableincome,3166.67)
+        tax = tax + (part*(17.5/100));
+        taxableincome = taxableincome - part ;
+                 }
+
+         // next 16,000 is 25%
+        if (taxableincome >0){
+        let part = Math.min ( taxableincome ,16000)
+         tax = tax + (part*(25/100));
+         taxableincome = taxableincome - part ;
+                 }
+
+        // next 30000 is 30%
+        if (taxableincome>0){
+        let part = Math.min (taxableincome,30000)
+        tax = tax + (part*(30/100));
+        taxableincome = taxableincome - part;
+                }
+
+
+        // next 50,416.67 is 35%
+        if (taxableincome>0){
+          let part = Math.min (taxableincome)
+          tax = tax + (part*(35/100))
+      
+                }
+
+        // display tax in tax textbox
+        document.getElementById("allowances").value =  tax
+
+        // net salary (takehome) calculation
+        netsalary = income - tax
+
+        // display net salary in textbox
+        document.getElementById("NetSalary").value = netsalary
+                }
+
+                
+</script>
+
+</body>
+</html>
